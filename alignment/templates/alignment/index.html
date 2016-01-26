@@ -1,6 +1,6 @@
 <form action="output/" method="post">
 	 {% csrf_token %}
     <label for="your_name">Your name: </label>
-    <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
+    <textarea id="your_name" name="your_name" value="{{ current_name }}"  cols="40" rows="5"></textarea>
     <input type="submit" value="OK">
 </form>
