@@ -6,4 +6,4 @@ def index(request):
     return render(request, 'alignment/index.html')
 
 def output(request):
-	return HttpResponse("Oi")
+	return HttpResponse(request.POST["your_name"])
