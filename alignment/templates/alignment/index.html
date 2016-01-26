@@ -1,4 +1,5 @@
-<form action="/your-name/" method="post">
+<form action="output/" method="post">
+	 {% csrf_token %}
     <label for="your_name">Your name: </label>
     <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
     <input type="submit" value="OK">
