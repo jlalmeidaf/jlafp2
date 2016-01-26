@@ -12,7 +12,7 @@ class TemplateProfile(object):
 		lines = profile_file.readlines()[6:]
 		list_of_sequences = []
 		for eachLine in lines:
-			print eachLine
+			# print eachLine
 			list_of_sequences.append(ProfileSequence(eachLine))
 		return list_of_sequences
 

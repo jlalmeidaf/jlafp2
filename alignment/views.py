@@ -1,7 +1,8 @@
 from django.shortcuts import render, HttpResponse
 from ModelingTools.FindTemplates import FindTemplates
 from ModelingTools.TemplateProfile import TemplateProfile
-import tempfile
+from ModelingTools.GetDataFromPDB import GetDataFromPDB
+import tempfile, os
 # Create your views here.
 
 def index(request):
@@ -18,10 +19,15 @@ def output(request):
 	sequence_file.close()
 	#end#
 
+	#encotra o melhor template
 	stepOne = FindTemplates(sequence_file_name)
 	stepOne.run()
 	profile_of_templates = TemplateProfile(stepOne.profilePRF)
 	better_profile = profile_of_templates.getBetterProfile()
+	#end#
+
+	template_manager = GetDataFromPDB(os.path.dirname(sequence_file_name), better_profile.name())
+	template_sequence_file = template_manager.getPDB_File()
 
 
-	return HttpResponse(better_profile.name())
+	return HttpResponse(template_sequence_file)
