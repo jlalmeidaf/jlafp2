@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from ModelingTools.FindTemplates import FindTemplates
+from ModelingTools.TemplateProfile import TemplateProfile
 import tempfile
 # Create your views here.
 
@@ -19,6 +20,8 @@ def output(request):
 
 	stepOne = FindTemplates(sequence_file_name)
 	stepOne.run()
+	profile_of_templates = TemplateProfile(stepOne.profilePRF)
+	better_profile = profile_of_templates.getBetterProfile()
 
 
-	return HttpResponse(sequence_file_temp[1])
+	return HttpResponse(better_profile.name())

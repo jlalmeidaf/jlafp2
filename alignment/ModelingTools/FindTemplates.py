@@ -4,6 +4,9 @@ from Modeller_Caller import modeller_caller
 class FindTemplates:
     def __init__(self,file_format_pir):
         self.file_format_pir = file_format_pir
+        self.profileALI = None
+        self.profilePAP = None
+        self.profilePRF = None
 
     def make_build_profilepy(self):
         script = """\
@@ -60,3 +63,6 @@ aln.write(file='""" + os.path.dirname(self.file_format_pir) + '/build_profilePAP
         self.make_build_profilepy()
         processo = modeller_caller()
         processo.run(self.__folder_of_model__() + '/build_profile.py')
+        self.profilePIR = os.path.dirname(self.file_format_pir) + '/build_profilePIR.ali'
+        self.profilePAP = os.path.dirname(self.file_format_pir) + '/build_profilePAP.ali'
+        self.profilePRF = os.path.dirname(self.file_format_pir) + '/build_profile.prf'
