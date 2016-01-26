@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse
 from ModelingTools.FindTemplates import FindTemplates
 from ModelingTools.TemplateProfile import TemplateProfile
 from ModelingTools.GetDataFromPDB import GetDataFromPDB
+from ModelingTools.Align import Align
 import tempfile, os
 # Create your views here.
 
@@ -26,8 +27,19 @@ def output(request):
 	better_profile = profile_of_templates.getBetterProfile()
 	#end#
 
-	template_manager = GetDataFromPDB(os.path.dirname(sequence_file_name), better_profile.name())
-	template_sequence_file = template_manager.getPDB_File()
+	#pega o template no site do pdb
+	template_manager = GetDataFromPDB(workdir, better_profile.name())
+	template_sequence_filename = template_manager.getPDB_File()
+	#end#
+
+	#alinhamento inicio
+	alignment_manager = Align(workdir + os.sep,workdir + os.sep,  os.path.basename(template_sequence_filename), sequence_file_name)
+	alignment_manager.__get_template_sequence_in_pir_format__()
+
+
+
+
+
 
 
 	return HttpResponse(template_sequence_file)
