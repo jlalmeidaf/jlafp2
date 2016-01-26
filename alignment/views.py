@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+from ModelingTools.FindTemplates import FindTemplates
 import tempfile
 # Create your views here.
 
@@ -15,6 +16,9 @@ def output(request):
 	sequence_file.write(request.POST["your_name"])
 	sequence_file.close()
 	#end#
+
+	stepOne = FindTemplates(sequence_file_name)
+	stepOne.run()
 
 
 	return HttpResponse(sequence_file_temp[1])
