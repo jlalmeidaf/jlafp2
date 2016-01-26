@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+import tempfile
 # Create your views here.
 
 def index(request):
@@ -6,4 +7,14 @@ def index(request):
     return render(request, 'alignment/index.html')
 
 def output(request):
-	return HttpResponse(request.POST["your_name"])
+	#cria um arquivo da sequencia
+	workdir = tempfile.mkdtemp()
+	sequence_file_temp = tempfile.mkstemp(dir = workdir)
+	sequence_file_name = sequence_file_temp[1]
+	sequence_file = file(sequence_file_name, "w")
+	sequence_file.write(request.POST["your_name"])
+	sequence_file.close()
+	#end#
+
+
+	return HttpResponse(sequence_file_temp[1])
