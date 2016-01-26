@@ -1,8 +1,9 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    context = {'latest_question_list': "oie"}
+    return render(request, 'alignment/index.html', context)
 
 def joao(request):
 	return HttpResponse("Oi")

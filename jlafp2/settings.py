@@ -55,7 +55,7 @@ ROOT_URLCONF = 'jlafp2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["alignment/templates/"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
