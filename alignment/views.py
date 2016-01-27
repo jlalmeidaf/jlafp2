@@ -3,6 +3,7 @@ from ModelingTools.FindTemplates import FindTemplates
 from ModelingTools.TemplateProfile import TemplateProfile
 from ModelingTools.GetDataFromPDB import GetDataFromPDB
 from ModelingTools.Align import Align
+from ModelingTools.Modeler import Modeler
 import tempfile, os
 # Create your views here.
 
@@ -29,14 +30,21 @@ def output(request):
 
 	#pega o template no site do pdb
 	template_manager = GetDataFromPDB(workdir, better_profile.name())
-	template_sequence_filename = template_manager.getPDB_File()
+	template_pdb_filename = template_manager.getPDB_File()
 	#end#
 
 	#alinhamento inicio
-	alignment_manager = Align(workdir + os.sep,workdir + os.sep,  os.path.basename(template_sequence_filename), sequence_file_name)
+	alignment_manager = Align(workdir + os.sep,workdir + os.sep,  os.path.basename(template_pdb_filename), sequence_file_name)
 	alignment_manager.convert_seqali_pir_to_fasta_formar(os.path.basename(sequence_file_name))
 	alignment_manager.align_with_muscle()
 	alignment_manager.convert_fasta_to_pir()
+	#end#
+
+	#modelar inicio
+	modeling_manager = Modeler(workdir + os.sep , workdir + os.sep, os.path.basename(template_pdb_filename), os.path.basename(alignment_manager.aliali))
+	modeling_manager.make_get_model_py()
+	modeling_manager.model_sequence()
+	best_result = modeling_manager.get_results()
 
 
 
@@ -44,4 +52,9 @@ def output(request):
 
 
 
-	return HttpResponse(template_sequence_filename)
+
+
+
+
+
+	return HttpResponse(best_result)
