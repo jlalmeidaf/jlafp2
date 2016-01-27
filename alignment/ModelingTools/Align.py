@@ -19,7 +19,7 @@ class Align:
         self.template_pir = None
 
 
-    def convert_seqali_pir_to_fasta_formar(self):
+    def convert_seqali_pir_to_fasta_formar(self, file_name):
         script = """\
 from modeller import *
 import os
@@ -36,7 +36,7 @@ aln.write(file='""" + self.__folder_of_model__() + """/template.pir', alignment_
 aln.write(file='""" + self.__folder_of_model__() + """/template.fasta', alignment_format = 'FASTA')
 
 aln2 = alignment(env)
-aln2.append(file='""" + self.__folder_of_model__() + """/seq.ali', alignment_format = 'PIR')
+aln2.append(file='""" + self.__folder_of_model__() + file_name + """', alignment_format = 'PIR')
 aln2.write(file='""" + self.__folder_of_model__() + """/seq.fasta', alignment_format='FASTA')
 
 unalinedfasta = file('""" + self.__folder_of_model__() + """/unaligned.fasta', 'w')
@@ -86,44 +86,34 @@ aln.write(file='""" + self.__folder_of_model__() + """/str.seq', alignment_forma
         processo = modeller_caller()
         processo.run(self.__folder_of_model__() + 'get_template.py')
 
-    def search_an_hmmm(self):
-          seqfasta = self.modeldir + "/seq.fasta"
-          result =  self.modeldir + "/hmmsearch.txt"
-          hmmer = RunCommand(["hmmsearch",self.pfam_database, seqfasta, ">", result])
-          hmmer.run()
-          # print "foi"
-          # seqfasta = modeldir + "/seq.fasta"
-          # result =  modeldir + "/hmmsearch.txt"
-          # os.popen("hmmsearch " + self.pfam_database + " " + seqfasta + " > " + result)
-          self.hmmresults = result
+    # def search_an_hmmm(self):
+    #       seqfasta = self.modeldir + "/seq.fasta"
+    #       result =  self.modeldir + "/hmmsearch.txt"
+    #       hmmer = RunCommand(["hmmsearch",self.pfam_database, seqfasta, ">", result])
+    #       hmmer.run()
+    #       # print "foi"
+    #       # seqfasta = modeldir + "/seq.fasta"
+    #       # result =  modeldir + "/hmmsearch.txt"
+    #       # os.popen("hmmsearch " + self.pfam_database + " " + seqfasta + " > " + result)
+    #       self.hmmresults = result
 
-    def find_better_motif(self):
-      better_result = None
-      for qresults in SearchIO.parse(self.hmmresults,'hmmer3-text'):
-          if(len(qresults.hits)>0 and better_result != None):
-            print qresults.hits
-            print qresults.seq_len
-            print better_result.seq_len
-            if qresults.seq_len > better_result.seq_len:
-              print qresults.seq_len
-              better_result = qresults
-          else:
-            if len(qresults.hits)>0:
-              better_result = qresults
-      print better_result.id
-      self.betterid =  better_result.id
+    # def find_better_motif(self):
+    #   better_result = None
+    #   for qresults in SearchIO.parse(self.hmmresults,'hmmer3-text'):
+    #       if(len(qresults.hits)>0 and better_result != None):
+    #         print qresults.hits
+    #         print qresults.seq_len
+    #         print better_result.seq_len
+    #         if qresults.seq_len > better_result.seq_len:
+    #           print qresults.seq_len
+    #           better_result = qresults
+    #       else:
+    #         if len(qresults.hits)>0:
+    #           better_result = qresults
+    #   print better_result.id
+    #   self.betterid =  better_result.id
 
-    def fetch_the_hmm(self):
-          result = self.modeldir + "PRF.hmm"
-          hmmer = RunCommand(["hmmfetch",self.pfam_database, self.betterid,">", result])
-          hmmer.run()
-          self.hmm =  result
 
-    def align_with_hmmer(self):
-        result = self.modeldir + "seq.ali"
-        hmmer = RunCommand(["hmmalign", self.hmm, self.unaligned_seq ,">", result])
-        hmmer.run()
-        self.fasta_aligned_file = result
 
     def align_with_muscle(self):
       result = self.modeldir + "seq.ali"

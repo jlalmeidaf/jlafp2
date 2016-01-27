@@ -34,7 +34,9 @@ def output(request):
 
 	#alinhamento inicio
 	alignment_manager = Align(workdir + os.sep,workdir + os.sep,  os.path.basename(template_sequence_filename), sequence_file_name)
-	alignment_manager.__get_template_sequence_in_pir_format__()
+	alignment_manager.convert_seqali_pir_to_fasta_formar(os.path.basename(sequence_file_name))
+	alignment_manager.align_with_muscle()
+	alignment_manager.convert_fasta_to_pir()
 
 
 
@@ -42,4 +44,4 @@ def output(request):
 
 
 
-	return HttpResponse(template_sequence_file)
+	return HttpResponse(template_sequence_filename)
