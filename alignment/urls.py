@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'output/', views.output, name='output'),
+    # url(r'output/', views.output, name='output'),
+    url(r'find_templates/', views.find_templates, name='find_templates'),
 
 ]
