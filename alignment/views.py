@@ -32,7 +32,8 @@ def find_templates(request):
 	profile_of_templates = TemplateProfile(stepOne.profilePRF)
 	better_profile = profile_of_templates.getBetterProfile()
 	#end#
-	return HttpResponse(better_profile.name())
+	context = {'better_template': better_profile.name()}
+	return render(request, 'alignment/find_template.html', context)
 
 # def output(request):
 
