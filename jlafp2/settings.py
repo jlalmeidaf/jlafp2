@@ -27,7 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 # Application definition
 
 INSTALLED_APPS = [

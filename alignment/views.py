@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from ModelingTools.FindTemplates import FindTemplates
 from ModelingTools.TemplateProfile import TemplateProfile
 from ModelingTools.GetDataFromPDB import GetDataFromPDB
@@ -9,6 +9,7 @@ from ModelingTools.MakeProfile import MakeProfile
 from ModelingTools.GetProt2 import GetProt2
 import tempfile, os
 workdir = None
+template_manager = None
 # Create your views here.
 
 def index(request):
@@ -18,6 +19,7 @@ def index(request):
 
 def find_templates(request):
 	#cria um arquivo da sequencia
+	# if not request.POST.has_key("your_name"):
 	workdir = tempfile.mkdtemp()
 	sequence_file_temp = tempfile.mkstemp(dir = workdir)
 	sequence_file_name = sequence_file_temp[1]
@@ -32,25 +34,45 @@ def find_templates(request):
 	profile_of_templates = TemplateProfile(stepOne.profilePRF)
 	better_profile = profile_of_templates.getBetterProfile()
 	#end#
-	context = {'better_template': better_profile.name()}
-	return render(request, 'alignment/find_template.html', context)
+
+	#pega o template no site do pdb
+	template_manager = GetDataFromPDB(workdir, better_profile.name())
+	
+	#end#
+	context = {'better_template': better_profile.name(),
+	}
+	request.session['workdir'] = workdir
+	request.session['template_manager'] = template_manager
+	request.session['sequence_file_name'] = sequence_file_name
+	reponse = render(request, 'alignment/find_template.html', context)
+	return HttpResponse(reponse)
+
+
+def alignment2(request):
+	template_manager = request.session['template_manager']
+	workdir = request.session['workdir']
+	sequence_file_name = request.session['sequence_file_name']
+	# return HttpResponse(x)
+	#alinhamento inicio
+
+	template_pdb_filename = template_manager.getPDB_File()
+	alignment_manager = Align(workdir + os.sep,workdir + os.sep,  os.path.basename(template_pdb_filename), sequence_file_name)
+	alignment_manager.convert_seqali_pir_to_fasta_formar(os.path.basename(sequence_file_name))
+	alignment_manager.align_with_muscle()
+	alignment_manager.convert_fasta_to_pir()
+	context = {'alignment': "alignment"}
+	# #end#
+	return render(request, 'alignment/alignment.html', context)
+
 
 # def output(request):
 
 
 
 
-# 	#pega o template no site do pdb
-# 	template_manager = GetDataFromPDB(workdir, better_profile.name())
-# 	template_pdb_filename = template_manager.getPDB_File()
-# 	#end#
 
-# 	#alinhamento inicio
-# 	alignment_manager = Align(workdir + os.sep,workdir + os.sep,  os.path.basename(template_pdb_filename), sequence_file_name)
-# 	alignment_manager.convert_seqali_pir_to_fasta_formar(os.path.basename(sequence_file_name))
-# 	alignment_manager.align_with_muscle()
-# 	alignment_manager.convert_fasta_to_pir()
-# 	#end#
+
+
 
 # 	#modelar inicio
 # 	modeling_manager = Modeler(workdir + os.sep , workdir + os.sep, os.path.basename(template_pdb_filename), os.path.basename(alignment_manager.aliali))
