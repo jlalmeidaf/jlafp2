@@ -18,3 +18,5 @@ class ProfileSequence():
         return self.estruturaparticionada[9]
     def identity(self):
         return self.estruturaparticionada[10]
+    def sequence(self):
+        return self.estruturaparticionada[12]

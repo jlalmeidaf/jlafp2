@@ -33,13 +33,20 @@ def find_templates(request):
 	stepOne.run()
 	profile_of_templates = TemplateProfile(stepOne.profilePRF)
 	better_profile = profile_of_templates.getBetterProfile()
+
+	input_sequence = profile_of_templates.list_of_sequences[0]
 	#end#
 
 	#pega o template no site do pdb
 	template_manager = GetDataFromPDB(workdir, better_profile.name())
-	
+	print better_profile.sequence()
 	#end#
 	context = {'better_template': better_profile.name(),
+
+	'better_profile_sequence' : (better_profile.sequence()).strip("\n"),
+	'better_template_identity' : better_profile.identity(),
+	'input_sequence_name' : input_sequence.name(),
+	'input_sequence_sequence' : input_sequence.sequence()
 	}
 	request.session['workdir'] = workdir
 	request.session['template_manager'] = template_manager
@@ -61,7 +68,11 @@ def alignment2(request):
 	alignment_manager.align_with_muscle()
 	alignment_manager.convert_fasta_to_pir()
 	request.session["alignment_manager"] = alignment_manager
-	context = {'alignment': "Alinhamento Done"}
+
+	file_ = file(alignment_manager.aliali,'r')
+	text_ = file_.read()
+
+	context = {'alignment': text_}
 	# #end#
 	return render(request, 'alignment/alignment.html', context)
 

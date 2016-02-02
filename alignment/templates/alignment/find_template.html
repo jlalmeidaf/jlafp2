@@ -1,5 +1,15 @@
 <form action="http://localhost:8000/alignment/alignment2/" method="post">
 	 {% csrf_token %}
-    {{better_template}}
-    <input type="submit" value="OK">
+   	<h1>Selected sequence: {{better_template}}</h1> 
+   	identity: {{better_template_identity}}
+   	<!-- <p>Selected sequence: {{better_template}}</p> -->
+<!--    	<h2>Sequences:</h2>
+   	{{input_sequence_name}}:
+   	{{input_sequence_sequence}}
+   	<hr></hr>
+   	{{better_template}}:
+   	{{better_profile_sequence}} -->
+   	<hr></hr>
+   	
+    <input type="submit" value="Go to Alignment">
 </form>
