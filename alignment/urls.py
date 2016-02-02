@@ -1,4 +1,6 @@
 from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls.static import static
 
 from . import views
 
@@ -8,4 +10,4 @@ urlpatterns = [
     url(r'^find_templates/$', views.find_templates, name='find_templates'),
     url(r'^alignment2/$', views.alignment2, name='alignment2'),
     url(r'^modeling/$', views.modeling, name='modeling'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
