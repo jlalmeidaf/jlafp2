@@ -60,10 +60,23 @@ def alignment2(request):
 	alignment_manager.convert_seqali_pir_to_fasta_formar(os.path.basename(sequence_file_name))
 	alignment_manager.align_with_muscle()
 	alignment_manager.convert_fasta_to_pir()
-	context = {'alignment': "alignment"}
+	request.session["alignment_manager"] = alignment_manager
+	context = {'alignment': "Alinhamento Done"}
 	# #end#
 	return render(request, 'alignment/alignment.html', context)
 
+def modeling(request):
+		#modelar inicio
+	workdir = request.session['workdir']
+	template_manager = request.session['template_manager']
+	template_pdb_filename = template_manager.getPDB_File()
+	alignment_manager = request.session['alignment_manager']
+	modeling_manager = Modeler(workdir + os.sep , workdir + os.sep, os.path.basename(template_pdb_filename), os.path.basename(alignment_manager.aliali))
+	modeling_manager.make_get_model_py()
+	modeling_manager.model_sequence()
+	best_model = modeling_manager.get_results()
+	context = {"modeling" : best_model}
+	return render(request, 'alignment/model.html', context)
 
 # def output(request):
 
