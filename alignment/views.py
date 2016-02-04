@@ -24,7 +24,9 @@ def find_templates(request):
 	sequence_file_temp = tempfile.mkstemp(dir = workdir)
 	sequence_file_name = sequence_file_temp[1]
 	sequence_file = file(sequence_file_name, "w")
-	sequence_file.write(request.POST["your_name"])
+	sequence_file.write(">P1;seq\nsequence:seq:::::::0.00: 0.00\n")
+	sequence_file.write("\n" +request.POST["your_name"])
+	sequence_file.write("*")
 	sequence_file.close()
 	#end#
 
@@ -78,18 +80,18 @@ def alignment2(request):
 
 def modeling(request):
 		#modelar inicio
-	# workdir = request.session['workdir']
-	# template_manager = request.session['template_manager']
-	# template_pdb_filename = template_manager.getPDB_File()
-	# alignment_manager = request.session['alignment_manager']
-	# modeling_manager = Modeler(workdir + os.sep , workdir + os.sep, os.path.basename(template_pdb_filename), os.path.basename(alignment_manager.aliali))
-	# modeling_manager.make_get_model_py()
-	# modeling_manager.model_sequence()
-	# best_model = modeling_manager.get_results()
+	workdir = request.session['workdir']
+	template_manager = request.session['template_manager']
+	template_pdb_filename = template_manager.getPDB_File()
+	alignment_manager = request.session['alignment_manager']
+	modeling_manager = Modeler(workdir + os.sep , workdir + os.sep, os.path.basename(template_pdb_filename), os.path.basename(alignment_manager.aliali))
+	modeling_manager.make_get_model_py()
+	modeling_manager.model_sequence()
+	best_model = modeling_manager.get_results()
 
-	# file_ = file(best_model,'r')
-	# text_ = "\n".join(file_.readlines()[1:])
-	context = {"modeling" : "text_"}
+	file_ = file(best_model,'r')
+	text_ = "\n".join(file_.readlines()[1:])
+	context = {"modeling" : text_}
 	return render(request, 'alignment/model.html', context)
 
 # def output(request):
