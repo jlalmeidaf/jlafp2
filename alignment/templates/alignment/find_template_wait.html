@@ -1,0 +1,29 @@
+
+{% if c.alive %}
+<a href="" class="btn btn-danger" role="button">WAIT</a>
+{% else %}
+<a href="/alignment/conta/" class="btn btn-primary" role="button">GO</a>
+{% endif %}
+<script>
+$(document).ready(function() {
+
+    // avoid hard-coding urls...
+    var yourApp = {
+        contaUrl: "{% url 'conta' %}"
+    };
+
+    $('#btnGo').click(function(e) {
+        e.preventDefault();  // prevent the link from navigating
+
+        // set css classes and text of button
+        $(this)
+            .removeClass('btn-primary')
+            .addClass('btn-danger')
+            .text('WAIT');
+
+        $.get(yourApp.contaUrl, function(json) {
+             window.top = json.redirect;
+        });
+    });
+});
+<\script>
