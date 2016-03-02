@@ -1,8 +1,33 @@
 {% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, target-densitydpi=device-dpi">
 
+ <meta charset="utf-8">
+ 
+ <title>GLmol embedding examples</title>
+ <style type="text/css">
+ </style>
+</head>
 
-<form action="localhost:8000/alignment/modeling/" method="post">
-	 {% csrf_token %}
-    {{modeling}}
-    <input type="submit" value="Proximo">
-</form>
+<body>
+<div id="glmol02" style="width: 500px; height: 400px; background-color: black;"></div> <textarea id="glmol02_src" style="display: none;">
+{{modeling}}
+</textarea>
+
+<script src="{% static "glmol/js/jquery-1.7.min.js" %}" ></script>
+<script src="{% static "glmol/js/Three49custom.js" %}"></script>
+<script type="text/javascript" src="{% static "glmol/js/GLmol.js" %}"></script>
+<script type="text/javascript">
+
+// Small molecules can be embedded in the page
+
+var glmol02 = new GLmol('glmol02');
+
+// Proteins can also be embedded in the page but 
+//  you might want to keep it separate.
+
+</script>
+</body></html>

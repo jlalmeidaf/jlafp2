@@ -7,7 +7,13 @@ from ModelingTools.Modeler import Modeler
 from ModelingTools.Malign2 import Malign2
 from ModelingTools.MakeProfile import MakeProfile
 from ModelingTools.GetProt2 import GetProt2
+
+from django.core.urlresolvers import reverse
+from django.http import JsonResponse
+
 import tempfile, os
+import time
+
 workdir = None
 template_manager = None
 # Create your views here.
@@ -24,35 +30,40 @@ def find_templates(request):
 	sequence_file_temp = tempfile.mkstemp(dir = workdir)
 	sequence_file_name = sequence_file_temp[1]
 	sequence_file = file(sequence_file_name, "w")
-	sequence_file.write(request.POST["your_name"])
+	sequence_file.write(">P1;seq\nsequence:seq:::::::0.00: 0.00\n")
+	sequence_file.write("\n" +request.POST["your_name"])
+	sequence_file.write("*")
 	sequence_file.close()
 	#end#
 
+	return render(request, 'alignment/find_template_wait.html')
+
+
 	#encotra o melhor template
-	stepOne = FindTemplates(sequence_file_name)
-	stepOne.run()
-	profile_of_templates = TemplateProfile(stepOne.profilePRF)
-	better_profile = profile_of_templates.getBetterProfile()
+	# stepOne = FindTemplates(sequence_file_name)
+	# stepOne.run()
+	# profile_of_templates = TemplateProfile(stepOne.profilePRF)
+	# better_profile = profile_of_templates.getBetterProfile()
 
-	input_sequence = profile_of_templates.list_of_sequences[0]
-	#end#
+	# input_sequence = profile_of_templates.list_of_sequences[0]
+	# #end#
 
-	#pega o template no site do pdb
-	template_manager = GetDataFromPDB(workdir, better_profile.name())
-	print better_profile.sequence()
-	#end#
-	context = {'better_template': better_profile.name(),
+	# #pega o template no site do pdb
+	# template_manager = GetDataFromPDB(workdir, better_profile.name())
+	# print better_profile.sequence()
+	# #end#
+	# context = {'better_template': better_profile.name(),
 
-	'better_profile_sequence' : (better_profile.sequence()).strip("\n"),
-	'better_template_identity' : better_profile.identity(),
-	'input_sequence_name' : input_sequence.name(),
-	'input_sequence_sequence' : input_sequence.sequence()
-	}
-	request.session['workdir'] = workdir
-	request.session['template_manager'] = template_manager
-	request.session['sequence_file_name'] = sequence_file_name
-	reponse = render(request, 'alignment/find_template.html', context)
-	return HttpResponse(reponse)
+	# 'better_profile_sequence' : (better_profile.sequence()).strip("\n"),
+	# 'better_template_identity' : better_profile.identity(),
+	# 'input_sequence_name' : input_sequence.name(),
+	# 'input_sequence_sequence' : input_sequence.sequence()
+	# }
+	# request.session['workdir'] = workdir
+	# request.session['template_manager'] = template_manager
+	# request.session['sequence_file_name'] = sequence_file_name
+	# reponse = render(request, 'alignment/find_template.html', context)
+	# return HttpResponse(reponse)
 
 
 def alignment2(request):
@@ -86,13 +97,22 @@ def modeling(request):
 	modeling_manager.make_get_model_py()
 	modeling_manager.model_sequence()
 	best_model = modeling_manager.get_results()
-	context = {"modeling" : best_model}
+
+	file_ = file(best_model,'r')
+	text_ = "\n".join(file_.readlines()[1:])
+	context = {"modeling" : text_}
 	return render(request, 'alignment/model.html', context)
 
 # def output(request):
 
 
 
+
+def conta(request):
+    # c.prova(0)
+    time.sleep(10)
+    redirect = reverse('find_templates')
+    return JsonResponse({'redirect': redirect})
 
 
 
