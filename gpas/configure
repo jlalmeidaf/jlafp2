@@ -1,0 +1,64 @@
+#!/bin/bash
+
+echo "Creating makefile..."
+
+MF=Makefile
+
+rm -f ${MF}
+
+echo -e "SDK_COMMON_DIR = /usr/local/cuda/include" >> ${MF}
+echo -e "SDK_COMMON_LIB_DIR = /usr/local/cuda" >> ${MF}
+echo -e "TOOLKIT_INC_DIR = /usr/local/cuda/include\n" >> ${MF}
+
+echo -e "ARCH = sm_20    #use sm_20 for Fermi, sm_12 for 1.2 and sm_13 for 1.3" >> ${MF}
+echo -e "CXX = nvcc" >> ${MF}
+echo -e "NVCC = nvcc\n" >> ${MF}
+
+echo -e "NVCCOPTIONS = -arch \$(ARCH) #-use_fast_math " >> ${MF}
+echo -e "NVCCFLAGS = -O3 \$(NVCCOPTIONS) #-I \$(TOOLKIT_INC_DIR) -I. -I \$(SDK_COMMON_DIR)/inc/\n" >> ${MF}
+
+echo -e "CXXFLAGS = \$(NVCCFLAGS)" >> ${MF}
+echo -e "NVCCLIBS = #-L \$(SDK_COMMON_LIB_DIR)/lib -lcutil -lm\n" >> ${MF}
+
+
+echo -e "all: source directories\n" >> ${MF}
+
+echo    "#------------------------------ seq.out --------------------------------"  >> ${MF}
+echo -e  "source: gpas\n" >> ${MF}
+echo -ne "gpas: "  >> ${MF}
+find .  -name '*.cpp' -exec bash -c 'echo $1 | cut -c3- | head -c-5; echo -ne ".o \\\\\n\t"' {} {} \; >> ${MF}
+echo -e  "main_cu.o" >> ${MF}
+echo -ne "\t\t" >> ${MF}
+echo -ne "  \$(NVCC) \$(NVCCFLAGS) \$(NVCCLIBS) "  >> ${MF}
+#echo -n \ \ nvcc \  >> ${MF}
+find . -name '*.cpp' -exec bash -c 'echo $1 | cut -c3- | head -c-5; echo -ne ".o \\\\\n\t\t"' {} {} \; >> ${MF}
+echo -e  "main_cu.o\\" >> ${MF}
+echo -e  "\t\t-o gpas\n\n" >> ${MF}
+
+
+echo    "#------------------------------ CPP --------------------------------------------"  >> ${MF}
+find . -name '*.cpp' -exec bash -c 'g++ -MM $1 ; echo -e "\t\t\$(CXX) \$(CXXFLAGS)  -c $1"' {} {} \; >> ${MF}
+
+
+echo    "#------------------------------ CU ---------------------------------------------"  >> ${MF}
+nvcc -M main_cu.cu 2>/dev/null | egrep ^m >> ${MF}
+nvcc -M main_cu.cu 2>/dev/null | egrep ^\ \ \ \ [^\/] >> ${MF}
+echo -e "\n\n\n\t  \$(NVCC) \$(NVCCFLAGS) -c main_cu.cu -o main_cu.o" >> ${MF}
+
+echo    "#------------------------------ DIRECTORIES ------------------------------------"  >> ${MF}
+echo -e "directories: results \n" >> ${MF}
+echo    "results:" >> ${MF}
+echo -e "\t mkdir -p results" >> ${MF}
+
+
+echo    "#-------------------------------- CLEANING -------------------------------------"  >> ${MF}
+echo -ne "clean: \n\trm -f " >> ${MF}
+find . -name '*.cpp' -exec bash -c 'echo $1 | cut -c3- | head -c-5; echo -ne ".o \n\trm -f "' {} {} \; >> ${MF}
+echo -e "gpas" >> ${MF}
+echo -e "\trm -f main_cu.o\n" >> ${MF}
+
+
+echo    "#--------------------------------- OTHER ---------------------------------------"  >> ${MF}
+echo    "ptx:" >> ${MF}
+echo -e "\t\$(NVCC) \$(NVCCFLAGS) -c main_cu.cu --ptxas-options=-v \n" >> ${MF}
+

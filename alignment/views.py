@@ -36,34 +36,34 @@ def find_templates(request):
 	sequence_file.close()
 	#end#
 
-	return render(request, 'alignment/find_template_wait.html')
+	# return render(request, 'alignment/find_template_wait.html')
 
 
 	#encotra o melhor template
-	# stepOne = FindTemplates(sequence_file_name)
-	# stepOne.run()
-	# profile_of_templates = TemplateProfile(stepOne.profilePRF)
-	# better_profile = profile_of_templates.getBetterProfile()
+	stepOne = FindTemplates(sequence_file_name)
+	stepOne.run()
+	profile_of_templates = TemplateProfile(stepOne.profilePRF)
+	better_profile = profile_of_templates.getBetterProfile()
 
-	# input_sequence = profile_of_templates.list_of_sequences[0]
-	# #end#
+	input_sequence = profile_of_templates.list_of_sequences[0]
+	#end#
 
-	# #pega o template no site do pdb
-	# template_manager = GetDataFromPDB(workdir, better_profile.name())
-	# print better_profile.sequence()
-	# #end#
-	# context = {'better_template': better_profile.name(),
+	#pega o template no site do pdb
+	template_manager = GetDataFromPDB(workdir, better_profile.name())
+	print better_profile.sequence()
+	#end#
+	context = {'better_template': better_profile.name(),
 
-	# 'better_profile_sequence' : (better_profile.sequence()).strip("\n"),
-	# 'better_template_identity' : better_profile.identity(),
-	# 'input_sequence_name' : input_sequence.name(),
-	# 'input_sequence_sequence' : input_sequence.sequence()
-	# }
-	# request.session['workdir'] = workdir
-	# request.session['template_manager'] = template_manager
-	# request.session['sequence_file_name'] = sequence_file_name
-	# reponse = render(request, 'alignment/find_template.html', context)
-	# return HttpResponse(reponse)
+	'better_profile_sequence' : (better_profile.sequence()).strip("\n"),
+	'better_template_identity' : better_profile.identity(),
+	'input_sequence_name' : input_sequence.name(),
+	'input_sequence_sequence' : input_sequence.sequence()
+	}
+	request.session['workdir'] = workdir
+	request.session['template_manager'] = template_manager
+	request.session['sequence_file_name'] = sequence_file_name
+	reponse = render(request, 'alignment/find_template.html', context)
+	return HttpResponse(reponse)
 
 
 def alignment2(request):
