@@ -12,7 +12,7 @@ class GPUAlign(Align):
 		self.gpas_aligned_file = result
 		self.convert_gpas_to_fasta()
 
-    def convert_gpas_to_fasta(self):
+	def convert_gpas_to_fasta(self):
 		gpas_result = file(self.gpas_aligned_file, "r")
 		gpas_result_readline = gpas_result.readlines()
 		first_seq = gpas_result_readline[10]
