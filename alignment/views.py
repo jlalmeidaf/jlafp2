@@ -2,7 +2,8 @@ from django.shortcuts import render, HttpResponse, redirect
 from ModelingTools.FindTemplates import FindTemplates
 from ModelingTools.TemplateProfile import TemplateProfile
 from ModelingTools.GetDataFromPDB import GetDataFromPDB
-from ModelingTools.Align import Align
+# from ModelingTools.Align import Align
+from ModelingTools.GPUAlign import GPUAlign
 from ModelingTools.Modeler import Modeler
 from ModelingTools.Malign2 import Malign2
 from ModelingTools.MakeProfile import MakeProfile
@@ -74,9 +75,9 @@ def alignment2(request):
 	#alinhamento inicio
 
 	template_pdb_filename = template_manager.getPDB_File()
-	alignment_manager = Align(workdir + os.sep,workdir + os.sep,  os.path.basename(template_pdb_filename), sequence_file_name)
+	alignment_manager = GPUAlign(workdir + os.sep,workdir + os.sep,  os.path.basename(template_pdb_filename), sequence_file_name)
 	alignment_manager.convert_seqali_pir_to_fasta_formar(os.path.basename(sequence_file_name))
-	alignment_manager.align_with_muscle()
+	alignment_manager.align_with_GPU()
 	alignment_manager.convert_fasta_to_pir()
 	request.session["alignment_manager"] = alignment_manager
 
