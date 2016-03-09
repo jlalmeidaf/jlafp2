@@ -115,10 +115,6 @@ def modeling(request):
 	context = {"modeling" : text_}
 	return render(request, 'alignment/model.html', context)
 
-# def output(request):
-
-
-
 
 def conta(request):
     # c.prova(0)

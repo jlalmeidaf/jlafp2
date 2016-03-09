@@ -31,10 +31,10 @@ class GPUAlign(Align):
 
 		fasta_name = self.gpas_aligned_file + ".fasta"
 		fasta_file = file(fasta_name, "w")
-		fasta_file.write(">" + first_seq_name + "\n")
-		fasta_file.write(first_seq)
 		fasta_file.write(">" + second_seq_name + "\n")
 		fasta_file.write(second_seq)
+		fasta_file.write(">" + first_seq_name + "\n")
+		fasta_file.write(first_seq)
 		self.fasta_aligned_file = fasta_name
 		# print fasta_name
 		self.seq_ali = fasta_name
