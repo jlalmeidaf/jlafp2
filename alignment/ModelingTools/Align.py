@@ -3,7 +3,7 @@ from Modeller_Caller import modeller_caller
 from RunCommand import RunCommand
 from Bio import SearchIO
 from AlignmentBuilder import AlignmentBuilder
-class Align:
+class Align(object):
     def __init__(self,pdb_folder,modeldir,pdb_file,seq_ali):
         self.seq_ali = modeldir + seq_ali
         self.pdb_folder = pdb_folder
@@ -28,7 +28,7 @@ env = environ()
 env.io.hetatm = env.io.water = False
 env.io.atom_files_directory = ['""" + self.__folder_of_model__() + """']
 code = '""" + self.strname + """'   #   estrutura a ser lida#
-mdl = model(env, file=code)
+mdl = model(env, file=code, model_segment=('FIRST:A','LAST:A'))
 
 aln = alignment(env)
 aln.append_model(mdl, align_codes=code)
@@ -71,7 +71,7 @@ env.io.hetatm = env.io.water = True
 env.io.atom_files_directory = './:../atom_files'
 
 code = '""" + self.strname + """'   #   estrutura a ser lida#
-mdl = model(env, file=code)
+mdl = model(env, file=code, model_segment=('FIRST:A','LAST:A'))
 
 aln = alignment(env)
 aln.append_model(mdl, align_codes=code)
@@ -127,7 +127,7 @@ aln.write(file='""" + self.__folder_of_model__() + """/str.seq', alignment_forma
       # print self.template_pir
       try:
         x = AlignmentBuilder(self.modeldir, os.path.basename(self.template), self.fasta_aligned_file,  self.template_pir)
-        print "---"
+        # print "---"
         aliali = self.__folder_of_model__() + 'ali.ali'
         alingFile = file(aliali,'w')
         alingFile.write(x.__get_template_sequence__() + "\n\n") 
