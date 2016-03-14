@@ -1,0 +1,15 @@
+Parameters:
+ --winsize (-ws),   e.g. 64 or 80, must be multiple of 16
+ --ngpus (-ng),     number of GPUs to use, e.g. -ng 4
+ --infile (-i),     path to an input file in the fasta format, e.g. data/3_666.fax
+ --outfile (-o),    path to a file where the results are written, e.g. results/results.txt
+ --submatrix (-sm), e.g. data/substitution_matrices/BLOSUM62.txt
+ --gapopen (-go),   e.g. 10
+ --gapext (-ge),    e.g. 2
+ --alg (-a),        sw - Smith-Waterman
+                    nwg - Needleman-Wunsch global
+                    nws - Needleman-Wunsch semiglobal
+                    nwgs, nwss, sws - additional letter 's' at the end means "score-only version"
+ --gpus (-g),       to select particular GPUs to be used, e.g. -g 0,3
+ --help (-h),       print this help
+

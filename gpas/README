@@ -1,0 +1,21 @@
+In order to compile the program the user needs to perform the following steps:
+
+1) open "configure" file and set the following system-specific variables:
+   SDK_COMMON_DIR
+   SDK_COMMON_LIB_DIR
+   TOOLKIT_INC_DIR
+   ARCH
+
+2) run commands:
+   ./configure
+   make
+
+Launching the program: ./gpas
+                       ./gpas --help
+                       ./gpas --version
+
+For more information ask:
+   Wojciech.Frohmberg@cs.put.poznan.pl
+   Michal.Kierzynka@cs.put.poznan.pl
+   Pawel.Wojciechowski@cs.put.poznan.pl
+

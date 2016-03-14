@@ -1,0 +1,23 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.7	//
+Data	data.cpp	/^Data::Data(const char* filename)$/;"	f	class:Data	signature:(const char* filename)
+Data	data.h	/^		Data(const char*);$/;"	p	class:Data	access:public	signature:(const char*)
+Data	data.h	/^class Data$/;"	c
+Data::Data	data.cpp	/^Data::Data(const char* filename)$/;"	f	class:Data	signature:(const char* filename)
+Data::Data	data.h	/^		Data(const char*);$/;"	p	class:Data	access:public	signature:(const char*)
+Data::n	data.h	/^		int n;		\/\/number of sequences$/;"	m	class:Data	access:public
+Data::readN	data.cpp	/^int Data::readN(FILE *fd)$/;"	f	class:Data	signature:(FILE *fd)
+Data::readN	data.h	/^		int readN(FILE*);$/;"	p	class:Data	access:private	signature:(FILE*)
+Data::seqs	data.h	/^		char* seqs;	\/\/all sequences$/;"	m	class:Data	access:public
+Data::starts	data.h	/^		int* starts;	\/\/indicies of sequences beginnings$/;"	m	class:Data	access:public
+__DATA__	data.h	2;"	d
+main	main.cpp	/^int main()$/;"	f	signature:()
+n	data.h	/^		int n;		\/\/number of sequences$/;"	m	class:Data	access:public
+readN	data.cpp	/^int Data::readN(FILE *fd)$/;"	f	class:Data	signature:(FILE *fd)
+readN	data.h	/^		int readN(FILE*);$/;"	p	class:Data	access:private	signature:(FILE*)
+seqs	data.h	/^		char* seqs;	\/\/all sequences$/;"	m	class:Data	access:public
+starts	data.h	/^		int* starts;	\/\/indicies of sequences beginnings$/;"	m	class:Data	access:public
